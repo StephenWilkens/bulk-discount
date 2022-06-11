@@ -238,4 +238,10 @@ RSpec.describe "merchant dashboard", type: :feature do
     end
   end
 
+  it 'has a link to the discounts index page' do
+    visit "/merchants/#{@merch_1.id}/dashboard"
+
+    click_link 'Discounts'
+    expect(current_path).to eq("/merchants/#{@merch_1.id}/discounts")
+  end
 end
