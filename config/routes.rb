@@ -19,4 +19,6 @@ Rails.application.routes.draw do
     resources :invoices, only: [:index, :show, :update], controller: :admin_invoices
     resources :merchants, only: [:new, :create, :show, :edit, :update, :index], param: :merchant_id, controller: :admin_merchants
   end
+
+  get '/merchants/:merchant_id/discounts', to: 'discounts#index'
 end
