@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'merchants discounts index page' do
+RSpec.describe 'merchant discounts index page' do
   before :each do
     @merch_1 = Merchant.create!(name: "Two-Legs Fashion")
     @merch_2 = Merchant.create!(name: "Two-Legs Thomas")
@@ -76,7 +76,7 @@ RSpec.describe 'merchants discounts index page' do
     @discount1 = Discount.create!(name: "10 at 10", percentage_discount: 10, quantity_threshold: 10, merchant_id: @merch_1.id)
     @discount2 = Discount.create!(name: "15 at 15", percentage_discount: 15, quantity_threshold: 15, merchant_id: @merch_1.id)
     @discount3 = Discount.create!(name: "20 at 20", percentage_discount: 20, quantity_threshold: 20, merchant_id: @merch_2.id)
-
+    @discount4 = @merch_1.discounts.create!(name: "lads", percentage_discount: 4, quantity_threshold: 69)
     visit "/merchants/#{@merch_1.id}/discounts"
   end 
 
@@ -92,5 +92,10 @@ RSpec.describe 'merchants discounts index page' do
     expect(page).to_not have_content("Quantity threshold: 20")
     click_link '10 at 10'
     expect(current_path).to eq("/merchants/#{@merch_1.id}/discounts/#{@discount1.id}")
+  end
+
+  it 'has a link to create a new discount' do
+    click_link 'New Discount'
+    expect(current_path).to eq("/merchants/#{@merch_1.id}/discounts/new")
   end
 end

@@ -5,3 +5,5 @@
   <p>Percentage discount: <%= discount.percentage_discount %></p>
   <p>Quantity threshold: <%= discount.quantity_threshold %></p>
   <% end %>
+
+  <%= link_to 'New Discount', "/merchants/#{@merchant.id}/discounts/new" %>
