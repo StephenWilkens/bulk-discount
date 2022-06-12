@@ -1,0 +1,12 @@
+<%= form_with model: model, method: method, url: url, class: 'discounts_form', local: true do |f| %>
+  <%= f.label :name, 'Name' %>
+  <%= f.text_field :name, value: @discount.name %>
+
+  <%= f.label :percentage_discount, 'Discount Percentage' %>
+  <%= f.number_field :percentage_discount, value: @discount.percentage_discount %>
+
+  <%= f.label :quantity_threshold, 'Quantity Threshold' %>
+  <%= f.number_field :quantity_threshold, value: @discount.quantity_threshold %>
+
+  <%= f.submit 'Submit' %>
+<% end %>
