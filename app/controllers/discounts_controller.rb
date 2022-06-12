@@ -4,6 +4,7 @@ class DiscountsController < ApplicationController
   end
 
   def show
+    @merchant = Merchant.find(params[:merchant_id])    
     @discount = Discount.find(params[:discount_id])
   end
 
@@ -28,6 +29,22 @@ class DiscountsController < ApplicationController
     discount = Discount.find(params[:discount_id])
     discount.destroy
     redirect_to "/merchants/#{merchant.id}/discounts"
+  end
+
+  def edit
+    @merchant = Merchant.find(params[:merchant_id])
+    @discount = Discount.find(params[:discount_id])
+  end
+
+  def update
+    merchant = Merchant.find(params[:merchant_id])
+    discount = Discount.find(params[:discount_id])
+    if discount.update(discount_params)
+      redirect_to "/merchants/#{merchant.id}/discounts/#{discount.id}"
+    else
+      flash[:alert] = 'Unable to Update Discount'
+      redirect_to "/merchants/#{merchant.id}/discounts/#{discount.id}/edit"
+    end
   end
 
   private
