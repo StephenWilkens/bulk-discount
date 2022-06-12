@@ -1,0 +1,3 @@
+<h1>Edit Discount</h1>
+
+<%= render partial: 'form', locals: { method: :patch, url: "/merchants/#{@merchant.id}/discounts/#{@discount.id}", model: @merchant_discount, class: 'discounts_form', local: true } %>

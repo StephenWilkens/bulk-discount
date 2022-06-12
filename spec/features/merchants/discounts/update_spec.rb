@@ -78,16 +78,33 @@ RSpec.describe 'merchant discounts show page' do
     @discount3 = Discount.create!(name: "20 at 20", percentage_discount: 20, quantity_threshold: 20, merchant_id: @merch_2.id)
     @discount4 = @merch_1.discounts.create!(name: "lads", percentage_discount: 4, quantity_threshold: 69)
 
-    visit "/merchants/#{@merch_1.id}/discounts/#{@discount1.id}"
+    visit "/merchants/#{@merch_1.id}/discounts/#{@discount1.id}/edit"
+  end
+  it 'has a prepopulated update form' do
+    expect(page).to have_field('Name', with: @discount1.name)
+    expect(page).to have_field('Discount Percentage', with: @discount1.percentage_discount)
+    expect(page).to have_field('Quantity Threshold', with: @discount1.quantity_threshold)
   end
 
-  it 'displays the discounts quantity_threshold and percentage_discount' do
+  it 'can update a discount using all fields in the form' do
+    fill_in :Name, with: "50 at 50"
+    fill_in 'Discount Percentage', with: 50
+    fill_in 'Quantity Threshold', with: 50
+    click_button 'Submit'
+    expect(current_path).to eq("/merchants/#{@merch_1.id}/discounts/#{@discount1.id}")
+    expect(page).to have_content("50 at 50")
+    expect(page).to have_content("Percentage Discount: 50")
+    expect(page).to have_content("Quantity Threshold: 50")
+    expect(page).to_not have_content("10 at 10")
+  end
+
+  it 'can update a discount using some fields in the form' do
+    fill_in :Name, with: "50 at 50"
+    fill_in 'Quantity Threshold', with: 50
+    click_button 'Submit'
+    expect(current_path).to eq("/merchants/#{@merch_1.id}/discounts/#{@discount1.id}")
+    expect(page).to have_content("50 at 50")
     expect(page).to have_content("Percentage Discount: 10")
-    expect(page).to have_content("Quantity Threshold: 10")
-  end
-
-  it 'has an edit link' do
-    click_link 'Edit Discount'
-    expect(current_path).to eq("/merchants/#{@merch_1.id}/discounts/#{@discount1.id}/edit")
+    expect(page).to have_content("Quantity Threshold: 50")
   end
 end
