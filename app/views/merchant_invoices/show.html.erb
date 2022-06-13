@@ -20,4 +20,10 @@
   <% end %>
 <% end %>
 
-Total Revenue: $<%= ('%.2f' % @invoice.total_revenue.fdiv(100)) %>
+Total Revenue: $<%= ('%.2f' % @invoice.total_revenue.fdiv(100)) %><br>
+
+Total Revenue with Discounts: $<% dr = [] %>
+                                <% @invoice.invoice_items.each do | ii | %>
+                                <% dr << ii.apply_discount.fdiv(100) %>
+                                <%  end %>
+                                <%= '%.2f' % dr.sum %>
