@@ -7,7 +7,6 @@
 <% @invoice.invoice_items.each do |ii| %>
   <div id="ii-<%= ii.id %>">
   <% if ii.item.merchant_id == params[:merchant_id].to_i %>
-   <% #require "pry"; binding.pry %>
     <h3><%= ii.item.name %> 
       <% unless ii.applicable_discounts.empty? %>
         <%= link_to 'Discount Applied', "/merchants/#{@merchant.id}/discounts/#{ii.top_discount.id}" %>

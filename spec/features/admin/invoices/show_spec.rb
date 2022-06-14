@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Admin invoices show page' do
   before :each do
     @merch_1 = Merchant.create!(name: "Two-Legs Fashion")
+    @merch_2 = Merchant.create!(name: "Two-Legs Thomas")
 
     @item_1 = @merch_1.items.create!(name: "Two-Leg Pantaloons", description: "pants built for people with two legs", unit_price: 5000)
     @item_2 = @merch_1.items.create!(name: "Two-Leg Shorts", description: "shorts built for people with two legs", unit_price: 3000)
@@ -46,16 +47,36 @@ RSpec.describe 'Admin invoices show page' do
     @ii_9 = InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_9.id, quantity: 1, unit_price: @item_1.unit_price, status: 2)
     @ii_10 = InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_10.id, quantity: 1, unit_price: @item_1.unit_price, status: 2)
 
-    @ii_11 = InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_11.id, quantity: 1, unit_price: @item_1.unit_price, status: 2)
-    @ii_12 = InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_12.id, quantity: 1, unit_price: @item_1.unit_price, status: 2)
-    @ii_13 = InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_13.id, quantity: 1, unit_price: @item_1.unit_price, status: 2)
-    @ii_14 = InvoiceItem.create!(item_id: @item_4.id, invoice_id: @invoice_14.id, quantity: 500, unit_price: @item_4.unit_price, status: 2)
+    @ii_11 = InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_8.id, quantity: 10, unit_price: @item_1.unit_price, status: 2)
+    @ii_12 = InvoiceItem.create!(item_id: @item_2.id, invoice_id: @invoice_8.id, quantity: 20, unit_price: @item_2.unit_price, status: 2)
+    @ii_13 = InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_9.id, quantity: 20, unit_price: @item_1.unit_price, status: 2)
+    @ii_14 = InvoiceItem.create!(item_id: @item_4.id, invoice_id: @invoice_9.id, quantity: 50, unit_price: @item_2.unit_price, status: 2)
     @ii_15 = InvoiceItem.create!(item_id: @item_6.id, invoice_id: @invoice_14.id, quantity: 1, unit_price: @item_4.unit_price, status: 2)
     @ii_16 = InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_14.id, quantity: 30, unit_price: @item_1.unit_price, status: 2)
     @ii_17 = InvoiceItem.create!(item_id: @item_2.id, invoice_id: @invoice_14.id, quantity: 30, unit_price: @item_2.unit_price, status: 2)
     @ii_18 = InvoiceItem.create!(item_id: @item_3.id, invoice_id: @invoice_14.id, quantity: 30, unit_price: @item_3.unit_price, status: 2)
     @ii_19 = InvoiceItem.create!(item_id: @item_5.id, invoice_id: @invoice_15.id, quantity: 700, unit_price: @item_4.unit_price, status: 0)
 
+    @transaction_1 = @invoice_1.transactions.create!(credit_card_number: 4039485738495837, result: "success")
+    @transaction_2 = @invoice_2.transactions.create!(credit_card_number: 4039485738495837, result: "success")
+    @transaction_3 = @invoice_3.transactions.create!(credit_card_number: 4039485738495837, result: "success")
+    @transaction_4 = @invoice_4.transactions.create!(credit_card_number: 4847583748374837, result: "success")
+    @transaction_5 = @invoice_5.transactions.create!(credit_card_number: 4847583748374837, result: "success")
+    @transaction_6 = @invoice_6.transactions.create!(credit_card_number: 4847583748374837, result: "success")
+    @transaction_7 = @invoice_7.transactions.create!(credit_card_number: 4364756374652636, result: "success")
+    @transaction_8 = @invoice_8.transactions.create!(credit_card_number: 4364756374652636, result: "success")
+    @transaction_9 = @invoice_9.transactions.create!(credit_card_number: 4928294837461125, result: "success")
+    @transaction_10 = @invoice_10.transactions.create!(credit_card_number: 4928294837461125, result: "success")
+    @transaction_11 = @invoice_11.transactions.create!(credit_card_number: 4738473664751832, result: "success")
+    @transaction_12 = @invoice_12.transactions.create!(credit_card_number: 4738473664751832, result: "success")
+    @transaction_13 = @invoice_13.transactions.create!(credit_card_number: 4023948573948293, result: "success")
+    @transaction_14 = @invoice_14.transactions.create!(credit_card_number: 4023948573948293, result: "success")
+    @transaction_15 = @invoice_15.transactions.create!(credit_card_number: 4023948573948293, result: "success")
+
+    @discount1 = Discount.create!(name: "10 at 10", percentage_discount: 10, quantity_threshold: 10, merchant_id: @merch_1.id)
+    @discount2 = Discount.create!(name: "15 at 15", percentage_discount: 15, quantity_threshold: 15, merchant_id: @merch_1.id)
+    @discount3 = Discount.create!(name: "20 at 20", percentage_discount: 20, quantity_threshold: 20, merchant_id: @merch_2.id)
+    @discount4 = @merch_1.discounts.create!(name: "lads", percentage_discount: 4, quantity_threshold: 69)
   end
 
   it 'displays the invoices id, status, created time, and customers first and last name' do
@@ -97,4 +118,10 @@ RSpec.describe 'Admin invoices show page' do
 
     expect(page).to have_select(:status, :selected => "completed")
   end
+
+  it 'shows the total discounted revenue' do
+    visit "admin/invoices/#{@invoice_8.id}/"
+    expect(page).to have_content("Total Revenue with Discounts: $ 1010.00")
+  end
+
 end
