@@ -48,6 +48,8 @@ group :development, :test do
   gem 'orderly'
   gem 'httparty'
   gem 'json'
+  gem 'factory_bot_rails'
+  gem 'faker'
 end
 
 group :development do
