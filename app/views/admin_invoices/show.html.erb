@@ -18,3 +18,9 @@
   <p>Unit price: $<%= ('%.2f' % ii.unit_price.fdiv(100)) %></p>
   <p>Status: <%= ii.status %></p>
  <% end %>
+
+ Total Revenue with Discounts: $<% dr = [] %>
+                                <% @invoice.invoice_items.each do | ii | %>
+                                <% dr << ii.apply_discount.fdiv(100) %>
+                                <%  end %>
+                                <%= '%.2f' % dr.sum %>
