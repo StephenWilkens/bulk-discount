@@ -99,6 +99,10 @@ RSpec.describe InvoiceItem do
       expect(@ii_16.top_discount).to eq(@discount2)
     end
 
+    it 'can return the applicable discounts' do
+      expect(@ii_16.applicable_discounts).to eq([@discount1, @discount2])
+    end
+
     it 'can return the total revenue with a discount applied' do
       expect(@ii_16.apply_discount.fdiv(100)).to eq(1275.00)
     end

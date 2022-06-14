@@ -15,10 +15,11 @@ class InvoiceItem < ApplicationRecord
   end
 
   def top_discount
+    applicable_discounts.order(percentage_discount: :desc).first
+  end
+
+  def applicable_discounts
     discounts.where('discounts.quantity_threshold <= ?', quantity)
-              .select('discounts.*')
-              .order(percentage_discount: :desc)
-              .first
   end
 
    def apply_discount
