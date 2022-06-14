@@ -20,15 +20,27 @@ RSpec.describe Merchant do
   describe 'instance methods' do
 
     describe '#items_ready_to_ship' do
+      let(:merchants) { create_list :merchant, 2, status: "enabled" }
+      let(:merch_1) {merchants.first}
+      let(:merch_2) {merchants.last}
+
+      # let(:items) do 
+      #   [5000, 3000, 6000].map do |num|
+      #     create :item, merchant_id: merch_1.id, quantity: num
+      #   end
+      # end
+      # let(:item_1) { items.first }
+      # let(:item_2) { items.second }
+      # let(:item_3) { items.last }
 
       before :each do
-        @merch_1 = Merchant.create!(name: "Two-Legs Fashion")
-        @merch_2 = Merchant.create!(name: "Klein, Rempel and Jones")
+        # @merch_1 = Merchant.create!(name: "Two-Legs Fashion")
+        # @merch_2 = Merchant.create!(name: "Klein, Rempel and Jones")
 
-        @item_1 = @merch_1.items.create!(name: "Two-Leg Pantaloons", description: "pants built for people with two legs", unit_price: 5000)
-        @item_2 = @merch_1.items.create!(name: "Two-Leg Shorts", description: "shorts built for people with two legs", unit_price: 3000)
-        @item_3 = @merch_1.items.create!(name: "Hat", description: "hat built for people with two legs and one head", unit_price: 6000)
-        @item_4 = @merch_2.items.create!(name: "Pant", description: "pants built for people", unit_price: 50000)
+        @item_1 = merch_1.items.create!(name: "Two-Leg Pantaloons", description: "pants built for people with two legs", unit_price: 5000)
+        @item_2 = merch_1.items.create!(name: "Two-Leg Shorts", description: "shorts built for people with two legs", unit_price: 3000)
+        @item_3 = merch_1.items.create!(name: "Hat", description: "hat built for people with two legs and one head", unit_price: 6000)
+        @item_4 = merch_2.items.create!(name: "Pant", description: "pants built for people", unit_price: 50000)
     
         @cust_1 = Customer.create!(first_name: "Debbie", last_name: "Twolegs")
         @cust_2 = Customer.create!(first_name: "Tommy", last_name: "Doubleleg")
@@ -50,8 +62,8 @@ RSpec.describe Merchant do
       end
 
       it 'returns the items that have not yet been shipped for a particular merchant' do
-        expect(@merch_1.items_ready_to_ship).to eq([@ii_1, @ii_2, @ii_5, @ii_6])
-        expect(@merch_2.items_ready_to_ship).to eq([@ii_7])
+        expect(merch_1.items_ready_to_ship).to eq([@ii_1, @ii_2, @ii_5, @ii_6])
+        expect(merch_2.items_ready_to_ship).to eq([@ii_7])
       end
     end
 

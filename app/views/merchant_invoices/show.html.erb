@@ -5,18 +5,23 @@
 <p>Customer: <%= @invoice.customer.first_name %> <%=  @invoice.customer.last_name %></p>
 <br><br>
 <% @invoice.invoice_items.each do |ii| %>
+  <div id="ii-<%= ii.id %>">
   <% if ii.item.merchant_id == params[:merchant_id].to_i %>
-    <h3><%= ii.item.name %></h3>
+   <% #require "pry"; binding.pry %>
+    <h3><%= ii.item.name %> 
+      <% unless ii.applicable_discounts.empty? %>
+        <%= link_to 'Discount Applied', "/merchants/#{@merchant.id}/discounts/#{ii.top_discount.id}" %>
+      <% end %>
+    </h3>
     Quantity: <%= ii.quantity %><br>
     Unit Price: $<%= '%.2f' % ii.item.unit_price_to_dollars %><br>
-    <div id="ii-<%= ii.id %>">
       <%= form_with url: "/merchants/#{ii.item.merchant_id}/invoices/#{@invoice.id}", method: :patch, local: true do |form| %>
       <%= form.label :ii_status, "Status: "%>
       <%= form.select :ii_status, ["packaged", "pending", "shipped"], selected: ii.status %>
       <%= form.submit "Update Invoice" %>
       <% end %>
-    </div>
-    <br><br>
+  </div>
+  <br><br>
   <% end %>
 <% end %>
 
