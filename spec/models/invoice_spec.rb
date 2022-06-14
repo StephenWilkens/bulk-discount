@@ -35,6 +35,14 @@ RSpec.describe Invoice do
       @ii_5 = InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_5.id, quantity: 1, unit_price: @item_1.unit_price, status: 1)
       @ii_6 = InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_6.id, quantity: 1, unit_price: @item_1.unit_price, status: 2)
     end
+
+    it 'can return the total revenue' do
+      expect(@invoice_1.total_revenue).to eq(5000)
+    end
+
+    it 'can return a merchant object' do
+      expect(@invoice_1.merchant_object("#{@merch_1.id}")).to eq(@merch_1)
+    end
     
     describe '#incomplete_invoices_ordered' do
       it 'returns incomplete invoices orderd from oldest to newest' do
@@ -52,6 +60,6 @@ RSpec.describe Invoice do
       expect(item_1.merchant).to eq(merch_1)
       expect(item_2.merchant).to eq(merch_1)
       expect(item_3.merchant).to eq(merch_2)
-    end
+    end 
   end
 end
