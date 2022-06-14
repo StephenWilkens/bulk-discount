@@ -106,4 +106,14 @@ RSpec.describe 'merchant discounts index page' do
     end
     expect(page).to_not have_content("#{@discount1.name}")
   end
+
+  it 'displays the next 3 holidays' do
+    holiday_facade = HolidayFacade.new
+    @holidays = holiday_facade.holidays
+
+    expect(page).to have_content("Upcoming Holidays")
+    expect(page).to have_content("#{@holidays[0].name} on #{@holidays[0].date}")
+    expect(page).to have_content("#{@holidays[1].name} on #{@holidays[1].date}")
+    expect(page).to have_content("#{@holidays[2].name} on #{@holidays[2].date}")
+  end
 end
